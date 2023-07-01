@@ -1,12 +1,18 @@
 <script lang="ts">
     import AuthCheck from "$lib/components/AuthCheck.svelte";
-    import { db, user } from "$lib/firebase";
+    import { db, user, userData } from "$lib/firebase";
     import { doc, getDoc, writeBatch } from "firebase/firestore"
 
     let username = "";
     let loading = false;
     let isAvailable = false;
     let debounceTimer: NodeJS.Timeout;
+
+    const re = /^(?=[a-zA-Z0-9._]{3,16}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+
+    $: isValid = username?.length > 2 && username.length < 16 && re.test(username);
+    $: isTouched = username.length > 0;
+    $: isTaken = isValid && !isAvailable && !loading;
 
     async function checkAvailability() {
         isAvailable = false;
@@ -50,19 +56,52 @@
 </script>
 
 <AuthCheck>
-    <h2>Username</h2>
-
-    <form class="w-2/5" on:submit|preventDefault={confirmUsername}>
+    {#if $userData?.username}
+        <p class="card-title">
+            Your username is <span class="text-success">
+                @{$userData.username}
+            </span>
+        </p>
+        <p class="text-sm">(Usernames cannot be changed)</p>
+        <a href="/login/photo" class="btn btn-primary">Upload Profile Image</a>
+    {:else}
+        <form class="w-2/5" on:submit|preventDefault={confirmUsername}>
             <input
                 type="text"
                 placeholder="Username"
                 class="input w-full"
                 bind:value={username}
                 on:input={checkAvailability}
+                class:input-error={(!isValid && isTouched)}
+                class:input-warning={isTaken}
+                class:input-success={isAvailable && isValid && !loading}
             />
 
-            <p>Is available? {isAvailable}</p>
+            <div class="my-4 min-h-16 px-8 w-full">
+                {#if loading && isTouched}
+                    <p class="text-secondary">
+                        Checking availability of @{username}...
+                    </p>
+                {/if}
 
-            <button class="btn btn-success">Confirm username @{username} </button>
-    </form>
+                {#if !isValid && isTouched}
+                    <p class="text-error text-sm">
+                        must me 3-16 characters long, alphanumeric only
+                    </p>
+                {/if}
+
+                {#if isValid && !isAvailable && !loading}
+                    <p class="text-warning text-sm">
+                        @{username} is not available
+                    </p>
+                {/if}
+
+                {#if isValid && isAvailable && !loading}
+                    <button class="btn btn-success">
+                        Confirm username @{username}
+                    </button>
+                {/if}
+            </div>
+        </form>
+    {/if}
 </AuthCheck>
