@@ -40,11 +40,11 @@
             published: true,
             bio: "I am the Walrus",
             links: [
-                {
-                    title: "Test Link",
-                    url: "https://kung.foo",
-                    icon: "custom"
-                }
+                // {
+                //     title: "Test Link",
+                //     url: "https://kung.foo",
+                //     icon: "custom"
+                // }
             ]
         })
 
