@@ -57,11 +57,11 @@
 
 <AuthCheck>
     {#if $userData?.username}
-        <p class="card-title">
+        <h2 class="card-title">
             Your username is <span class="text-success">
                 @{$userData.username}
             </span>
-        </p>
+        </h2>
         <p class="text-sm">(Usernames cannot be changed)</p>
         <a href="/login/photo" class="btn btn-primary">Upload Profile Image</a>
     {:else}
