@@ -1,4 +1,5 @@
 # Deploying
+https://kit.svelte.dev/docs/adapters
 ### First time:
 ```
 npm i -g firebase
