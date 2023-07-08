@@ -81,6 +81,13 @@
             Edit your Profile
         </h1>
 
+        <p class="text-center">
+            Profile Link: 
+            <a href="/{$userData?.username}" class="link">
+                https://example.com/{$userData?.username}
+            </a>
+        </p>
+
         <SortableList
             list={$userData?.links}
             on:sort={sortList}

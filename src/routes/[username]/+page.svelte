@@ -28,7 +28,9 @@
 
     <ul class="list-none">
         {#each data.links as item}
-            <UserLink {...item} />
+            <div class="group">
+                <UserLink {...item} />
+            </div>
         {/each}
     </ul>
 </main>
