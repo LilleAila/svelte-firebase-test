@@ -9,3 +9,11 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 service-account.json
+
+#.firebase
+#.firebase/*
+*firebase*
+
+# Don't include this in your gitignore, but i don't want those files for this project
+.github
+.github/*
